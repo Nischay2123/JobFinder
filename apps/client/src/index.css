@@ -31,7 +31,51 @@
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
+
+  /* JobFinder Custom Theme Tokens */
+  --color-surface-dim: #121315;
+  --color-surface-mid: #161718;
+  --color-surface-low: #0C0D0E;
+  --color-surface-container: #1f2021;
+  --color-surface-container-high: #292a2b;
+  --color-surface-container-highest: #343536;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B2D5FF;
+  --color-text-muted: #8A8F98;
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.15);
+  --color-primary-container: #5e6ad2;
+  --color-on-primary-container: #fdfaff;
+  --background-image-ai-glow: linear-gradient(135deg, #5E6AD2 0%, #DFD1FF 100%);
+
+  --animate-fade-in-up: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in-up-delay-1: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+  --animate-fade-in-up-delay-2: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
+
+.ai-glow-border {
+  position: relative;
+}
+.ai-glow-border::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(135deg, rgba(94, 106, 210, 0.4) 0%, rgba(223, 209, 255, 0.1) 100%);
+  z-index: -1;
+  border-radius: inherit;
+}
+
 
 @layer base {
   :root {
@@ -58,25 +102,25 @@
   }
 
   .dark {
-    --background: hsl(222.2 84% 4.9%);
-    --foreground: hsl(210 40% 98%);
-    --card: hsl(222.2 84% 4.9%);
-    --card-foreground: hsl(210 40% 98%);
-    --popover: hsl(222.2 84% 4.9%);
-    --popover-foreground: hsl(210 40% 98%);
-    --primary: hsl(210 40% 98%);
-    --primary-foreground: hsl(222.2 47.4% 11.2%);
-    --secondary: hsl(217.2 32.6% 17.5%);
-    --secondary-foreground: hsl(210 40% 98%);
-    --muted: hsl(217.2 32.6% 17.5%);
-    --muted-foreground: hsl(215 20.2% 65.1%);
-    --accent: hsl(217.2 32.6% 17.5%);
-    --accent-foreground: hsl(210 40% 98%);
+    --background: #08090A;
+    --foreground: #FFFFFF;
+    --card: #0C0D0E;
+    --card-foreground: #FFFFFF;
+    --popover: #0C0D0E;
+    --popover-foreground: #FFFFFF;
+    --primary: #bdc2ff;
+    --primary-foreground: #121f8b;
+    --secondary: #4d4369;
+    --secondary-foreground: #e9ddff;
+    --muted: #1f2021;
+    --muted-foreground: #8A8F98;
+    --accent: #1f2021;
+    --accent-foreground: #FFFFFF;
     --destructive: hsl(0 62.8% 30.6%);
     --destructive-foreground: hsl(210 40% 98%);
-    --border: hsl(217.2 32.6% 17.5%);
-    --input: hsl(217.2 32.6% 17.5%);
-    --ring: hsl(212.7 26.8% 83.9%);
+    --border: rgba(255, 255, 255, 0.08);
+    --input: rgba(255, 255, 255, 0.08);
+    --ring: #5e6ad2;
   }
 }
 
