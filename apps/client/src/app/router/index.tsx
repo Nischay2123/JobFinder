@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { LandingPage } from '@features/landingpage';
+import { LandingPage } from '@features/landing';
 import { LoginPage, RegisterPage, VerifyEmailPage, CompleteRegistrationPage } from '@features/auth';
-import { HomePage } from '@features/home';
 import { OnboardingPage } from '@features/profile';
+import { HomePage } from '@features/dashboard';
 
 export const router = createBrowserRouter([
   {
