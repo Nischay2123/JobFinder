@@ -50,7 +50,7 @@ export const LoginPage: React.FC = () => {
           <CardContent className="p-0">
             <form onSubmit={onSubmit} className="flex flex-col gap-5">
               {serverError && (
-                <div className="bg-destructive/10 border border-destructive/20 text-destructive text-sm rounded-lg p-3 text-center">
+                <div className="bg-red-950/20 border border-red-500/30 text-red-500 text-sm rounded-lg p-3 text-center">
                   {serverError}
                 </div>
               )}
@@ -64,10 +64,12 @@ export const LoginPage: React.FC = () => {
                   type="email"
                   placeholder="name@company.com"
                   {...form.register("email")}
-                  className="bg-[#08090a] border border-border-subtle rounded-lg py-6 px-4 text-text-primary placeholder:text-text-muted transition-all focus-visible:ring-primary-container"
+                  className={`bg-[#08090a] border rounded-lg py-6 px-4 text-text-primary placeholder:text-text-muted transition-all focus-visible:ring-primary-container ${
+                    getErrorMessage("email") ? 'border-red-500' : 'border-border-subtle'
+                  }`}
                 />
                 {getErrorMessage("email") && (
-                  <span className="text-destructive text-xs mt-1 ml-1">{getErrorMessage("email")}</span>
+                  <span className="text-red-500 text-xs mt-1 ml-1">{getErrorMessage("email")}</span>
                 )}
               </div>
 
@@ -85,10 +87,12 @@ export const LoginPage: React.FC = () => {
                   type="password"
                   placeholder="••••••••"
                   {...form.register("password")}
-                  className="bg-[#08090a] border border-border-subtle rounded-lg py-6 px-4 text-text-primary placeholder:text-text-muted transition-all focus-visible:ring-primary-container"
+                  className={`bg-[#08090a] border rounded-lg py-6 px-4 text-text-primary placeholder:text-text-muted transition-all focus-visible:ring-primary-container ${
+                    getErrorMessage("password") ? 'border-red-500' : 'border-border-subtle'
+                  }`}
                 />
                 {getErrorMessage("password") && (
-                  <span className="text-destructive text-xs mt-1 ml-1">{getErrorMessage("password")}</span>
+                  <span className="text-red-500 text-xs mt-1 ml-1">{getErrorMessage("password")}</span>
                 )}
               </div>
 

@@ -39,8 +39,8 @@ export const VerifyEmailPage: React.FC = () => {
 
             {error && (
               <>
-                <div className="w-16 h-16 bg-destructive/10 border border-destructive/20 rounded-full flex items-center justify-center mb-6">
-                  <AlertCircle className="w-8 h-8 text-destructive" />
+                <div className="w-16 h-16 bg-red-950/20 border border-red-500/30 rounded-full flex items-center justify-center mb-6">
+                  <AlertCircle className="w-8 h-8 text-red-500" />
                 </div>
                 <h2 className="text-2xl font-bold tracking-tight text-text-primary mb-3">Verification Failed</h2>
                 <p className="text-sm text-text-muted mb-6 leading-relaxed">

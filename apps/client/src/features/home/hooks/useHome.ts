@@ -12,8 +12,10 @@ export const useHome = () => {
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/auth/login", { replace: true })
+    } else if (user && user.profile && !user.profile.isCompleted) {
+      navigate("/onboarding", { replace: true })
     }
-  }, [isAuthenticated, navigate])
+  }, [isAuthenticated, user, navigate])
 
   const handleLogout = async () => {
     try {

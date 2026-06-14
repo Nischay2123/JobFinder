@@ -21,12 +21,56 @@ export interface User {
   updatedAt: Date;
 }
 
+export interface Location {
+  city: string;
+  state: string;
+  country: string;
+}
+
 export interface UserProfile {
   id: string;
   userId: string;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
   currentStatus?: UserStatus;
   experienceYears?: number;
   preferredRoles: string[];
-  preferredLocations: string[];
+  preferredLocations: Location[];
+  skills: string[];
+  linkedinUrl?: string;
+  githubUrl?: string;
+  portfolioUrl?: string;
   resumeUrl?: string;
+  isCompleted: boolean;
+  experiences?: Experience[];
+  projects?: Project[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Experience {
+  id: string;
+  profileId: string;
+  companyName: string;
+  role: string;
+  employmentType?: string;
+  startDate: Date;
+  endDate?: Date;
+  isCurrent: boolean;
+  description?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Project {
+  id: string;
+  profileId: string;
+  title: string;
+  description?: string;
+  technologies: string[];
+  githubUrl?: string;
+  liveUrl?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

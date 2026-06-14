@@ -39,3 +39,52 @@ export const jobSchema = z.object({
   company: z.string(),
   location: z.string(),
 });
+
+export const profileStep1Schema = z.object({
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  phone: z.string().min(6, 'Valid phone number is required'),
+  currentStatus: z.enum(['STUDENT', 'FRESHER', 'WORKING_PROFESSIONAL']),
+});
+
+export const experienceSchema = z.object({
+  companyName: z.string().min(1, 'Company name is required'),
+  role: z.string().min(1, 'Role is required'),
+  employmentType: z.string().optional().nullable(),
+  startDate: z.string().or(z.date()).transform((val) => new Date(val)),
+  endDate: z.string().or(z.date()).optional().nullable().transform((val) => val ? new Date(val) : null),
+  isCurrent: z.boolean().default(false),
+  description: z.string().optional().nullable(),
+});
+
+export const projectSchema = z.object({
+  title: z.string().min(1, 'Project title is required'),
+  description: z.string().optional().nullable(),
+  technologies: z.array(z.string()).default([]),
+  githubUrl: z.string().url().or(z.string().length(0)).optional().nullable(),
+  liveUrl: z.string().url().or(z.string().length(0)).optional().nullable(),
+});
+
+export const locationSchema = z.object({
+  city: z.string().min(1, 'City is required'),
+  state: z.string().min(1, 'State is required'),
+  country: z.string().min(1, 'Country is required'),
+});
+
+export const saveOnboardingSchema = z.object({
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  phone: z.string().min(6, 'Valid phone number is required'),
+  currentStatus: z.enum(['STUDENT', 'FRESHER', 'WORKING_PROFESSIONAL']),
+  experienceYears: z.number().optional().nullable(),
+  preferredRoles: z.array(z.string()).min(1, 'At least one preferred role is required'),
+  preferredLocations: z.array(locationSchema).default([]),
+  skills: z.array(z.string()).default([]),
+  linkedinUrl: z.string().url().or(z.string().length(0)).optional().nullable(),
+  githubUrl: z.string().url().or(z.string().length(0)).optional().nullable(),
+  portfolioUrl: z.string().url().or(z.string().length(0)).optional().nullable(),
+  resumeUrl: z.string().url().or(z.string().length(0)).optional().nullable(),
+  experiences: z.array(experienceSchema).default([]),
+  projects: z.array(projectSchema).default([]),
+});
+

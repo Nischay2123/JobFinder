@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { LandingPage } from '@features/landingpage';
 import { LoginPage, RegisterPage, VerifyEmailPage, CompleteRegistrationPage } from '@features/auth';
 import { HomePage } from '@features/home';
+import { OnboardingPage } from '@features/profile';
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
   {
     path: '/auth/complete-registration',
     element: <CompleteRegistrationPage />,
+  },
+  {
+    path: '/onboarding',
+    element: <OnboardingPage />,
   },
   {
     path: '/home',

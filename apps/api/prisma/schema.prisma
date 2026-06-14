@@ -44,12 +44,53 @@ model User {
 }
 
 model UserProfile {
-  id                 String      @id @default(uuid())
-  userId             String      @unique
-  user               User        @relation(fields: [userId], references: [id])
+  id                 String       @id @default(uuid())
+  userId             String       @unique
+  user               User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName          String?
+  lastName           String?
+  phone              String?
   currentStatus      UserStatus?
   experienceYears    Float?
   preferredRoles     String[]
-  preferredLocations String[]
+  preferredLocations Json         @default("[]")
+  skills             String[]
+  linkedinUrl        String?
+  githubUrl          String?
+  portfolioUrl       String?
   resumeUrl          String?
+  isCompleted        Boolean      @default(false)
+  experiences        Experience[]
+  projects           Project[]
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @default(now()) @updatedAt
 }
+
+model Experience {
+  id             String       @id @default(uuid())
+  profileId      String
+  profile        UserProfile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  companyName    String
+  role           String
+  employmentType String?
+  startDate      DateTime
+  endDate        DateTime?
+  isCurrent      Boolean      @default(false)
+  description    String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+}
+
+model Project {
+  id           String       @id @default(uuid())
+  profileId    String
+  profile      UserProfile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  title        String
+  description  String?
+  technologies String[]
+  githubUrl    String?
+  liveUrl      String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now()) @updatedAt
+}
+

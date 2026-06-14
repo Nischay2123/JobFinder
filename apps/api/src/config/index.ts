@@ -15,6 +15,15 @@ const envSchema = z.object({
   
   // URLs
   FRONTEND_URL: z.string().url().default('http://localhost:5173'),
+
+  // AWS S3 Config
+  AWS_ACCESS_KEY_ID: z.string().optional(),
+  AWS_SECRET_ACCESS_KEY: z.string().optional(),
+  AWS_REGION: z.string().default('us-east-1'),
+  AWS_BUCKET_NAME: z.string().optional(),
+
+  // Gemini Config
+  GEMINI_API_KEY: z.string().optional(),
 });
 
 const _env = envSchema.safeParse(process.env);

@@ -36,16 +36,23 @@
   --color-surface-dim: #121315;
   --color-surface-mid: #161718;
   --color-surface-low: #0C0D0E;
+  --color-surface-lowest: #050607;
   --color-surface-container: #1f2021;
   --color-surface-container-high: #292a2b;
   --color-surface-container-highest: #343536;
+  --color-surface-container-lowest: #08090a;
   --color-text-primary: #FFFFFF;
   --color-text-secondary: #B2D5FF;
   --color-text-muted: #8A8F98;
   --color-border-subtle: rgba(255, 255, 255, 0.08);
   --color-border-strong: rgba(255, 255, 255, 0.15);
+  --color-outline: rgba(255, 255, 255, 0.35);
+  --color-outline-variant: rgba(255, 255, 255, 0.16);
   --color-primary-container: #5e6ad2;
   --color-on-primary-container: #fdfaff;
+  --color-tertiary: #a6e2d4;
+  --color-tertiary-container: #1e3530;
+  --color-secondary-container: #2e2842;
   --background-image-ai-glow: linear-gradient(135deg, #5E6AD2 0%, #DFD1FF 100%);
 
   --animate-fade-in-up: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -131,4 +138,99 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Onboarding Custom Styles */
+.glass-card {
+  background: rgba(22, 23, 24, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+.glass-card:hover {
+  border-color: rgba(94, 106, 210, 0.4);
+}
+
+.primary-glow {
+  box-shadow: 0 0 20px rgba(94, 106, 210, 0.15);
+  background: linear-gradient(180deg, rgba(116, 127, 221, 1) 0%, rgba(94, 106, 210, 1) 100%);
+}
+.primary-glow:hover {
+  transform: scale(0.98);
+  box-shadow: 0 0 30px rgba(94, 106, 210, 0.25);
+}
+
+.step-active {
+  background-color: #5E6AD2;
+  box-shadow: 0 0 10px rgba(94, 106, 210, 0.5);
+}
+
+.input-focus-ring:focus {
+  outline: none;
+  border-color: #5E6AD2;
+  box-shadow: 0 0 0 4px rgba(94, 106, 210, 0.2);
+}
+
+.atmospheric-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% -20%, rgba(94, 106, 210, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 100% 100%, rgba(189, 194, 255, 0.03) 0%, transparent 40%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.active-step-glow {
+  box-shadow: 0 0 15px rgba(189, 194, 255, 0.5);
+}
+
+.top-light {
+  box-shadow: inset 0 0.5px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+.glow-button {
+  background: #5E6AD2;
+  background: linear-gradient(180deg, #747FE0 0%, #5E6AD2 100%);
+  box-shadow: 0 4px 14px 0 rgba(94, 106, 210, 0.39);
+}
+
+.step-gradient {
+  background: linear-gradient(90deg, #5E6AD2 0%, #bdc2ff 100%);
+}
+
+.upload-zone {
+  background: #0D0E0F;
+  border: 2px dashed rgba(94, 106, 210, 0.3);
+  transition: all 0.3s ease;
+}
+.upload-zone:hover {
+  border-color: #5E6AD2;
+  background: rgba(94, 106, 210, 0.05);
+}
+
+.primary-btn {
+  background: #5E6AD2;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 12px rgba(94, 106, 210, 0.3);
+}
+
+.secondary-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Chrome/Safari Autofill Styles Override for Dark Mode */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: #FFFFFF !important;
+  transition: background-color 5000s ease-in-out 0s;
+  caret-color: #FFFFFF;
 }

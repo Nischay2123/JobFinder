@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { UserProfile } from '@job-finder/shared-types';
 
 export interface User {
   id: string;
   email: string;
   name: string;
   role: 'USER' | 'ADMIN';
+  profile?: UserProfile | null;
 }
 
 export interface AuthState {
