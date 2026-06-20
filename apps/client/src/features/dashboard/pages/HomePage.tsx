@@ -4,6 +4,7 @@ import { HomeNavbar } from "../components/HomeNavbar"
 import { HomeMetrics } from "../components/HomeMetrics"
 import { JobMatchesList } from "../components/JobMatchesList"
 import { ProfileSidebar } from "../components/ProfileSidebar"
+import { JobSyncProgress } from "../components/JobSyncProgress"
 
 export const HomePage: React.FC = () => {
   const {
@@ -25,6 +26,9 @@ export const HomePage: React.FC = () => {
     handleLogout,
     handleApplyJob,
     handleEditProfile,
+    isSyncing,
+    syncStatus,
+    handleStartSync,
   } = useHomeDashboard()
 
   return (
@@ -65,6 +69,16 @@ export const HomePage: React.FC = () => {
               </p>
             </div>
           </section>
+
+          {/* Sync Progress Tracker */}
+          <JobSyncProgress
+            status={syncStatus?.status || null}
+            jobsFound={syncStatus?.jobsFound || 0}
+            jobsAdded={syncStatus?.jobsAdded || 0}
+            errorMessage={syncStatus?.errorMessage}
+            isSyncing={isSyncing}
+            onStartSync={handleStartSync}
+          />
 
           {/* Quick Metrics */}
           <HomeMetrics matchedRolesCount={mockJobs.length} />

@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import { errorHandler } from './shared/middleware/errorHandler';
 import { authRoutes } from './modules/auth/auth.routes';
 import { profileRoutes } from './modules/profile/profile.routes';
+import { jobsRoutes } from './modules/jobs/jobs.routes';
 import { config } from './config';
 import { requestLogger } from './shared/middleware/requestLogger';
 
@@ -28,6 +29,7 @@ app.use(cookieParser());
 // Routes
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
+app.use('/', jobsRoutes);
 
 // Health check
 app.get('/health', (_req, res) => {
