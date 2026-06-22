@@ -13,7 +13,7 @@ export class SyncProcessor {
   public async process(
     syncId: string,
     source: JobSource
-  ): Promise<{ jobsFound: number; jobsAdded: number }> {
+  ): Promise<{ jobsFound: number; jobsAdded: number; jobsUpdated: number; errorsCount: number }> {
     console.log(`[SyncProcessor] Initiating process for source: ${source}, syncId: ${syncId}`);
 
     // 1. Move UserSync state to FETCHING
@@ -23,17 +23,22 @@ export class SyncProcessor {
     const connector = ConnectorRegistry.get(source);
 
     // 3. Fetch jobs from the resolved source
-    const rawJobs = await connector.fetchJobs();
+    const { jobs, errorsCount } = await connector.fetchJobs();
 
     // 4. Move UserSync state to NORMALIZING
     await this.syncService.normalizing(syncId);
 
     // 5. Store and deduplicate jobs
-    const result = await this.jobStorageService.store(rawJobs);
+    const result = await this.jobStorageService.store(jobs);
 
     // 6. Move UserSync state to COMPLETED with metrics
     await this.syncService.completed(syncId, result.jobsFound, result.jobsAdded);
 
-    return result;
+    return {
+      jobsFound: result.jobsFound,
+      jobsAdded: result.jobsAdded,
+      jobsUpdated: result.jobsUpdated,
+      errorsCount,
+    };
   }
 }

@@ -102,6 +102,8 @@ enum JobSource {
   CUTSHORT
   LINKEDIN
   NAUKRI
+  GREENHOUSE
+  LEVER
 }
 
 enum RemoteType {
@@ -120,8 +122,8 @@ enum EmploymentType {
 
 enum JobStatus {
   ACTIVE
-  EXPIRED
-  ARCHIVED
+  INACTIVE
+  DELETED
 }
 
 enum ProcessingStatus {
@@ -135,6 +137,13 @@ enum SyncStatus {
   FETCHING
   NORMALIZING
   COMPLETED
+  FAILED
+}
+
+enum SyncRunStatus {
+  RUNNING
+  SUCCESS
+  PARTIAL
   FAILED
 }
 
@@ -167,8 +176,34 @@ model Job {
   processingStatus   ProcessingStatus @default(PENDING)
   jobHash            String           @unique
   rawPayload         Json?
+  firstSeenAt        DateTime         @default(now())
+  lastSeenAt         DateTime         @default(now())
+  deletedAt          DateTime?
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
+
+  @@index([status])
+  @@index([lastSeenAt])
+  @@index([source])
+  @@index([source, status])
+  @@index([source, lastSeenAt])
+  @@index([source, status, lastSeenAt])
+}
+
+model SyncRun {
+  id           String        @id @default(uuid())
+  source       JobSource
+  status       SyncRunStatus
+  startedAt    DateTime      @default(now())
+  completedAt  DateTime?
+  jobsSeen     Int           @default(0)
+  jobsAdded    Int           @default(0)
+  jobsUpdated  Int           @default(0)
+  errorsCount  Int           @default(0)
+  errorMessage String?
+
+  @@index([source])
+  @@index([status])
 }
 
 model UserSync {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { RawJob, JobConnector } from '../../types/raw-job';
+import { RawJob, JobConnector, ConnectorResult } from '../../types/raw-job';
 import { YCParser } from './yc.parser';
 import { HnItemPayload } from './yc.types';
 
@@ -11,17 +11,21 @@ export class YCConnector implements JobConnector {
    * 2. Cheerio Scraping of HN jobs HTML
    * 3. Playwright (Optional placeholder)
    */
-  async fetchJobs(): Promise<RawJob[]> {
+  private errorsCount = 0;
+
+  async fetchJobs(): Promise<ConnectorResult> {
     console.log('[YCConnector] Starting job fetch...');
+    this.errorsCount = 0;
 
     // Tier 1: Try Hacker News Firebase JSON API
     try {
       const jobs = await this.fetchViaJsonApi();
       if (jobs && jobs.length > 0) {
         console.log(`[YCConnector] Tier 1 (JSON API) succeeded: Found ${jobs.length} jobs.`);
-        return jobs;
+        return { jobs, errorsCount: this.errorsCount };
       }
     } catch (error: any) {
+      this.errorsCount++;
       console.warn('[YCConnector] Tier 1 (JSON API) failed, trying Tier 2. Error:', error.message);
     }
 
@@ -30,9 +34,10 @@ export class YCConnector implements JobConnector {
       const jobs = await this.fetchViaCheerio();
       if (jobs && jobs.length > 0) {
         console.log(`[YCConnector] Tier 2 (Cheerio) succeeded: Found ${jobs.length} jobs.`);
-        return jobs;
+        return { jobs, errorsCount: this.errorsCount };
       }
     } catch (error: any) {
+      this.errorsCount++;
       console.warn('[YCConnector] Tier 2 (Cheerio) failed, trying Tier 3. Error:', error.message);
     }
 
@@ -41,9 +46,10 @@ export class YCConnector implements JobConnector {
       const jobs = await this.fetchViaPlaywright();
       if (jobs && jobs.length > 0) {
         console.log(`[YCConnector] Tier 3 (Playwright) succeeded: Found ${jobs.length} jobs.`);
-        return jobs;
+        return { jobs, errorsCount: this.errorsCount };
       }
     } catch (error: any) {
+      this.errorsCount++;
       console.error('[YCConnector] Tier 3 (Playwright) failed. Error:', error.message);
     }
 
@@ -98,6 +104,7 @@ export class YCConnector implements JobConnector {
         }
       } catch (err: any) {
         console.warn(`[YCConnector] Failed to fetch HN item details for ID ${id}:`, err.message);
+        this.errorsCount++;
       }
     });
 

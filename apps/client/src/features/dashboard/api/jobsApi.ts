@@ -40,7 +40,7 @@ export interface DBJob {
   postedDate?: string | null;
   discoveredAt: string;
   expiresAt?: string | null;
-  status: 'ACTIVE' | 'EXPIRED' | 'ARCHIVED';
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETED';
   processingStatus: 'PENDING' | 'PROCESSED' | 'FAILED';
   jobHash: string;
 }

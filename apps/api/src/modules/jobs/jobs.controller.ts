@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { prisma } from '../../shared/db/prisma';
 import { AppError } from '../../shared/utils/AppError';
 import { enqueueJobSync, enqueueFailedJobReplay } from './jobs.queue';
+import { JobRepository } from './jobs.repository';
 
 /**
  * Trigger job sync for the authenticated user.
@@ -119,20 +120,13 @@ export const replayFailedJob = async (req: Request, res: Response, next: NextFun
   }
 };
 
+
 /**
  * Retrieve stored jobs from PostgreSQL.
  */
 export const getJobs = async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    const jobs = await prisma.job.findMany({
-      include: {
-        company: true,
-      },
-      orderBy: {
-        discoveredAt: 'desc',
-      },
-      take: 50,
-    });
+    const jobs = await JobRepository.findActiveJobs({ take: 50 });
 
     res.status(200).json({ jobs });
   } catch (error) {

@@ -14,6 +14,11 @@ export interface RawJob {
   rawPayload: unknown;
 }
 
+export interface ConnectorResult {
+  jobs: RawJob[];
+  errorsCount: number;
+}
+
 export interface JobConnector {
-  fetchJobs(): Promise<RawJob[]>;
+  fetchJobs(): Promise<ConnectorResult>;
 }

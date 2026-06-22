@@ -1,20 +1,27 @@
 import { config } from './config';
 import { jobsWorker } from './modules/jobs/jobs.worker';
+import { cleanupWorker, scheduleCleanupJob } from './modules/jobs/cleanup.worker';
 import { RedisManager } from './shared/redis/redis.manager';
 import { prisma } from './shared/db/prisma';
 
 console.log(`[Worker Process] Starting worker in [${config.NODE_ENV}] mode...`);
 
+// Schedule repeatable daily cleanup job on worker boot
+scheduleCleanupJob().catch((err) => {
+  console.error('[Worker Process] Failed to schedule repeatable cleanup job:', err.message);
+});
+
 // Handle graceful shutdown signals
 const gracefulShutdown = async (signal: string) => {
   console.log(`[Worker Process] Received ${signal}. Initializing graceful shutdown...`);
 
-  // 1. Close the BullMQ Worker to stop accepting new jobs
+  // 1. Close the BullMQ Workers to stop accepting new jobs
   try {
     await jobsWorker.close();
-    console.log('[Worker Process] BullMQ Worker interface closed.');
+    await cleanupWorker.close();
+    console.log('[Worker Process] BullMQ Workers closed.');
   } catch (err: any) {
-    console.error('[Worker Process] Error closing BullMQ Worker:', err.message);
+    console.error('[Worker Process] Error closing BullMQ Workers:', err.message);
   }
 
   // 2. Shut down Redis connection instances

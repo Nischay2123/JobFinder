@@ -47,6 +47,9 @@ export class JobStorageService {
         postedDate: normalized.postedDate,
         jobHash: hash,
         rawPayload: normalized.rawPayload as any,
+        firstSeenAt: new Date(),
+        lastSeenAt: new Date(),
+        status: 'ACTIVE',
       },
     });
   }
@@ -54,9 +57,10 @@ export class JobStorageService {
   /**
    * Normalizes, deduplicates, and saves job batches into the PostgreSQL database.
    */
-  public async store(rawJobs: RawJob[]): Promise<{ jobsFound: number; jobsAdded: number }> {
+  public async store(rawJobs: RawJob[]): Promise<{ jobsFound: number; jobsAdded: number; jobsUpdated: number }> {
     const jobsFound = rawJobs.length;
     let jobsAdded = 0;
+    let jobsUpdated = 0;
 
     for (const rawJob of rawJobs) {
       try {
@@ -70,9 +74,21 @@ export class JobStorageService {
           normalized.location || ''
         );
 
-        const alreadyExists = await this.deduplicationService.exists(hash);
-        if (alreadyExists) {
-          continue; // Duplicate job found, skip creation
+        const existingJob = await prisma.job.findUnique({
+          where: { jobHash: hash },
+        });
+
+        if (existingJob) {
+          await prisma.job.update({
+            where: { id: existingJob.id },
+            data: {
+              lastSeenAt: new Date(),
+              status: 'ACTIVE',
+              deletedAt: null,
+            },
+          });
+          jobsUpdated++;
+          continue;
         }
 
         await prisma.$transaction(async (tx) => {
@@ -94,6 +110,6 @@ export class JobStorageService {
       }
     }
 
-    return { jobsFound, jobsAdded };
+    return { jobsFound, jobsAdded, jobsUpdated };
   }
 }
